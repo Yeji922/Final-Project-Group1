@@ -10,9 +10,11 @@ from Utils.model import LSTMAttentionClassifier
 import pickle
 
 os.makedirs("saved_model", exist_ok=True)
-
+log_path = "saved_model/log_file.txt"
 def train_model(model, train_loader, val_loader, optimizer, criterion, device, epochs=5):
     model.to(device)
+    with open(log_path , "w") as f:
+        f.write("Epoch,Train_Loss,Train_Acc,Val_Acc\n")
     for epoch in range(epochs):
         model.train()
         total_loss, total_acc = 0, 0
@@ -36,12 +38,14 @@ def train_model(model, train_loader, val_loader, optimizer, criterion, device, e
                 val_acc += (outputs.argmax(1) == y).sum().item()
         print(f"Val Acc: {val_acc/len(val_loader.dataset):.4f}")
 
+        with open(log_path, "a") as f:
+            f.write(f"{epoch+1}, {total_loss/len(train_loader):.4f},{total_acc/len(train_loader.dataset):.4f},{val_acc/len(val_loader.dataset):.4f}\n")
+
     torch.save(model.state_dict(), "saved_model/lstm_attention_model.pt")
 
-def train_pipeline(dataset):
+def train_pipeline(dataset, device = "cpu"):
     # Load CSV
     df = pd.read_csv(dataset)
-    df = df.head(10) 
     # Split
     train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
 
@@ -53,7 +57,6 @@ def train_pipeline(dataset):
     val_loader = DataLoader(val_data, batch_size=32, collate_fn=collate_fn)
 
     # Model, optimizer, loss
-    device = "cuda" if torch.cuda.is_available() else "cpu"
     model = LSTMAttentionClassifier(
         vocab_size=len(train_data.vocab),
         embedding_dim=300,
@@ -65,7 +68,7 @@ def train_pipeline(dataset):
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     criterion = nn.CrossEntropyLoss()
 
-    train_model(model, train_loader, val_loader, optimizer, criterion, device, epochs=5)
+    train_model(model, train_loader, val_loader, optimizer, criterion, device, epochs=20)
 
     with open("saved_model/vocab.pkl", "wb") as f:
         pickle.dump(train_data.vocab, f)

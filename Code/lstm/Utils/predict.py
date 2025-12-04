@@ -4,9 +4,7 @@ from Utils.model import LSTMAttentionClassifier
 import os
 from pathlib import Path
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
-
-def predict_text(model_path, vocab_path, label_encoder_path, text = ""):
+def predict_text(model_path, vocab_path, label_encoder_path, device = "cpu", text = ""):
     
     script_dir = Path(__file__).resolve().parent
     model_path = (script_dir.parent / model_path).resolve()
@@ -26,7 +24,8 @@ def predict_text(model_path, vocab_path, label_encoder_path, text = ""):
     bidirectional=True
     )
 
-    model.load_state_dict(torch.load(model_path, map_location="cpu"))
+    model.load_state_dict(torch.load(model_path, map_location=device))
+    model.to(device)
     model.eval()
     if text:
         tokens = text.lower().split()
