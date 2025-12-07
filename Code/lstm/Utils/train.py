@@ -8,6 +8,7 @@ from sklearn.model_selection import train_test_split
 from Utils.dataloader import TextDataset, collate_fn
 from Utils.model import LSTMAttentionClassifier
 import pickle
+from Utils.evaluation import evaluate_model
 
 os.makedirs("saved_model", exist_ok=True)
 log_path = "saved_model/log_file.txt"
@@ -68,10 +69,27 @@ def train_pipeline(dataset, device = "cpu"):
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     criterion = nn.CrossEntropyLoss()
 
-    train_model(model, train_loader, val_loader, optimizer, criterion, device, epochs=20)
+    train_model(model, train_loader, val_loader, optimizer, criterion, device, epochs=10)
 
     with open("saved_model/vocab.pkl", "wb") as f:
         pickle.dump(train_data.vocab, f)
 
     with open("saved_model/label_encoder.pkl", "wb") as f:
         pickle.dump(train_data.label_encoder, f)
+
+    print("\nRunning full evaluation on validation set...")
+    metrics = evaluate_model(model, val_loader, train_data.label_encoder, device=device)
+
+    #METRICS
+    print("\n====== Final Evaluation Metrics ======")
+    print(f"Accuracy: {metrics['accuracy']:.4f}")
+    print(f"Macro Precision: {metrics['macro_precision']:.4f}")
+    print(f"Macro Recall: {metrics['macro_recall']:.4f}")
+    print(f"Macro F1-score: {metrics['macro_f1']:.4f}")
+    with open("saved_model/evaluation_metrics.txt", "w") as f:
+        f.write("Final Evaluation Metrics\n")
+        f.write(f"Accuracy: {metrics['accuracy']:.4f}\n")
+        f.write(f"Macro Precision: {metrics['macro_precision']:.4f}\n")
+        f.write(f"Macro Recall: {metrics['macro_recall']:.4f}\n")
+        f.write(f"Macro F1-score: {metrics['macro_f1']:.4f}\n\n")
+        f.write(metrics["report"])

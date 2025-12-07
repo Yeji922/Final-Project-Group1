@@ -1,0 +1,14 @@
+Final Evaluation Metrics
+Accuracy: 0.9515
+Macro Precision: 0.9515
+Macro Recall: 0.9515
+Macro F1-score: 0.9515
+
+              precision    recall  f1-score   support
+
+ non-suicide       0.96      0.95      0.95     23287
+     suicide       0.95      0.96      0.95     23128
+
+    accuracy                           0.95     46415
+   macro avg       0.95      0.95      0.95     46415
+weighted avg       0.95      0.95      0.95     46415
