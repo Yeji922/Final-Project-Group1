@@ -75,4 +75,4 @@ def show_top_words(model, tfidf, top_n=10):
 def save_model(model, tfidf, path_prefix="baseline"):
     joblib.dump(model, f"{path_prefix}_lr_model.pkl")
     joblib.dump(tfidf, f"{path_prefix}_tfidf.pkl")
-    print(f"✅ Saved: {path_prefix}_lr_model.pkl and TF-IDF vectorizer.")
+    print(f" Saved: {path_prefix}_lr_model.pkl and TF-IDF vectorizer.")

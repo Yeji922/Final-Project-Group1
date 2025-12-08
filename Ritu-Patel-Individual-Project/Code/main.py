@@ -1,6 +1,6 @@
 # ------------------------------------------------------------
 # main.py : Suicide & Depression Detection - Baseline Pipeline
-# ------------------------------------------------------------
+
 import pandas as pd
 import re
 import nltk
@@ -13,9 +13,9 @@ import seaborn as sns
 # Local imports
 from model import vectorize_text, train_lr, evaluate_model, show_top_words, save_model
 
-# ------------------------------------------------------------
+
 # 1. Setup & Load Dataset
-# ------------------------------------------------------------
+
 nltk.download('stopwords')
 nltk.download('wordnet')
 STOP_WORDS = set(stopwords.words('english'))
@@ -65,32 +65,31 @@ X_train, X_val, y_train, y_val = train_test_split(
 
 print(f"Train: {len(X_train)} | Val: {len(X_val)} | Test: {len(X_test)}")
 
-# ------------------------------------------------------------
 # 4. EDA
-# ------------------------------------------------------------
+
 plt.figure(figsize=(6,4))
 sns.countplot(y=y, order=y.value_counts().index, palette="cool")
 plt.title("Label Distribution")
 plt.show()
 
-# ------------------------------------------------------------
+
 # 5. Vectorize Text
-# ------------------------------------------------------------
+
 tfidf, X_train_tfidf, X_val_tfidf, X_test_tfidf = vectorize_text(
     X_train, X_val, X_test
 )
 
-# ------------------------------------------------------------
+
 # 6. Train & Evaluate
-# ------------------------------------------------------------
+
 lr_model = train_lr(X_train_tfidf, y_train)
 
 evaluate_model(lr_model, X_val_tfidf, y_val, title="Validation Set")
 evaluate_model(lr_model, X_test_tfidf, y_test, title="Test Set")
 
-# ------------------------------------------------------------
+
 # 7. Inspect Important Words & Save Model
-# ------------------------------------------------------------
+
 show_top_words(lr_model, tfidf, top_n=10)
 save_model(lr_model, tfidf, path_prefix="baseline")
 
