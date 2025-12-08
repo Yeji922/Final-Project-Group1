@@ -28,7 +28,7 @@ Final-Project-Group1/
 │  ├── baseline/      - Code implementing classical NLP baseline models  
 │  ├── lstm/          - Code for models built using BiLSTM architecture  
 │  ├── bert/          - Code for models developed through BERT fine-tuning  
-│  ├── app/           - Code that develops and runs the Streamlit application (UI & deployment)
+│  ├── app/           - Code that develops and runs the Streamlit application 
 
 |
 ├── Final-Group-Project-Report/
