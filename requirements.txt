@@ -1,0 +1,15 @@
+streamlit
+joblib
+numpy
+torch
+scikit-learn
+transformers
+protobuf
+sentencepiece
+safetensors
+typing-extensions
+pandas
+matplotlib 
+seaborn 
+captum 
+shap
