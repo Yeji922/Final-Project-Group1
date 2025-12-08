@@ -24,11 +24,12 @@ This structure ensures that all shared and individual contributions are easy to 
 
 Final-Project-Group1/
 ```
-│
 ├── Code/
-│  ├── baseline/     - Code implementing classical NLP baseline models  
-│  ├── lstm/         - Code for models built using BiLSTM architecture  
-│  ├── bert/         - Code for models developed through BERT fine-tuning  
+│  ├── baseline/      - Code implementing classical NLP baseline models  
+│  ├── lstm/          - Code for models built using BiLSTM architecture  
+│  ├── bert/          - Code for models developed through BERT fine-tuning  
+│  ├── app/           - Code that develops and runs the Streamlit application (UI & deployment)
+
 |
 ├── Final-Group-Project-Report/
 │  ├── Final_Report.pdf
